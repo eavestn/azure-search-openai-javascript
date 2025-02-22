@@ -49,19 +49,9 @@ const globalConfig = {
 
 const teaserListTexts = {
   TEASER_CTA_LABEL: 'Ask now',
-  HEADING_CHAT: 'Chat with our support team',
+  HEADING_CHAT: "Welcome, let's change your work.",
   HEADING_ASK: 'Ask a question',
-  DEFAULT_PROMPTS: [
-    {
-      description: 'How to search and book rentals?',
-    },
-    {
-      description: 'What is the refund policy?',
-    },
-    {
-      description: 'How to contact a representative?',
-    },
-  ],
+  DEFAULT_PROMPTS: [],
 };
 
 const NEXT_QUESTION_INDICATOR = 'Next Questions:';

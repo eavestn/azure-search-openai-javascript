@@ -16,11 +16,6 @@ Contained is a history of the conversation so far, including a new question aske
 If the question is not in English, translate the question to English before generating the search query.
 `;
 
-/**
- * Simple retrieve-then-read implementation, using the AI Search and OpenAI APIs directly.
- * It first retrieves top documents from search, then constructs a prompt with them, and then uses
- * OpenAI to generate an completion (answer) with that prompt.
- */
 export class ChatReadRetrieveRead extends ApproachBase implements ChatApproach {
   chatGptTokenLimit: number;
 
@@ -53,11 +48,12 @@ export class ChatReadRetrieveRead extends ApproachBase implements ChatApproach {
       model: this.chatGptModel,
       messages: history,
       temperature: Number(context?.temperature ?? 0.7),
-      max_tokens: 32,
+      max_completion_tokens: 500,
       n: 1,
     });
 
     const response = completion.choices[0];
+
     const content = response.message.content ?? '';
 
     return {
@@ -94,7 +90,7 @@ export class ChatReadRetrieveRead extends ApproachBase implements ChatApproach {
       model: this.chatGptModel,
       messages: history,
       temperature: Number(context?.temperature ?? 0.7),
-      max_tokens: 32,
+      max_tokens: 500,
       n: 1,
       stream: true,
     });
