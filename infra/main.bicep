@@ -326,7 +326,7 @@ module openAi 'core/ai/cognitiveservices.bicep' = {
           version: chatGptModelVersion
         }
         sku: {
-          name: 'Standard'
+          name: 'GlobalStandard'
           capacity: chatGptDeploymentCapacity
         }
       }
