@@ -10,9 +10,7 @@ import {
 } from './composable.js';
 import { html } from 'lit';
 import { globalConfig } from '../config/global-config.js';
-
 import iconClose from '../../public/svg/close-icon.svg?raw';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 @injectable()
 export class ChatDebugThoughtProcessController
@@ -40,66 +38,6 @@ export class ChatDebugThoughtProcessController
     this.context.selectedCitation = event?.detail?.citation;
 
     this.context.setState('showCitations', true);
-  }
-
-  renderChatEntryTabContent(entry: ChatThreadEntry) {
-    return html`
-      <tab-component
-        .tabs="${[
-          {
-            id: 'tab-thought-process',
-            label: globalConfig.THOUGHT_PROCESS_LABEL,
-          },
-          {
-            id: 'tab-support-context',
-            label: globalConfig.SUPPORT_CONTEXT_LABEL,
-          },
-          {
-            id: 'tab-citations',
-            label: globalConfig.CITATIONS_TAB_LABEL,
-          },
-        ] as TabContent[]}"
-        .selectedTabId="${this.selectedAsideTab}"
-      >
-        <div slot="tab-thought-process" class="tab-component__content">
-          ${entry && entry.thoughts
-            ? html` <p class="tab-component__paragraph">${unsafeHTML(entry.thoughts)}</p> `
-            : ''}
-        </div>
-        <div slot="tab-support-context" class="tab-component__content">
-          ${entry && entry.dataPoints
-            ? html`
-                <teaser-list-component
-                  .alwaysRow="${true}"
-                  .teasers="${entry.dataPoints.map((d) => {
-                    return { description: d };
-                  })}"
-                ></teaser-list-component>
-              `
-            : ''}
-        </div>
-        ${entry && entry.citations
-          ? html`
-              <div slot="tab-citations" class="tab-component__content">
-                <citation-list
-                  .citations="${entry.citations}"
-                  .label="${globalConfig.CITATIONS_LABEL}"
-                  .selectedCitation="${this.context.selectedCitation}"
-                  @on-citation-click="${this.handleCitationClick}"
-                ></citation-list>
-                ${this.context.selectedCitation
-                  ? this.citationControllers?.map((component) =>
-                      component.render(
-                        this.context.selectedCitation,
-                        `${this.context.apiUrl}/content/${this.context.selectedCitation.text}`,
-                      ),
-                    )
-                  : ''}
-              </div>
-            `
-          : ''}
-      </tab-component>
-    `;
   }
 
   get isEnabled() {
@@ -140,7 +78,6 @@ export class ChatDebugThoughtProcessController
           >
           </chat-action-button>
         </div>
-        ${this.renderChatEntryTabContent(this.context.selectedChatEntry as ChatThreadEntry)}
       </aside>
     `;
   }

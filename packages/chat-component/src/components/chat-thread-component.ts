@@ -2,7 +2,7 @@ import { LitElement, html } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 
 import { styles } from '../styles/chat-thread-component.js';
-
+import { marked } from 'marked';
 import { globalConfig } from '../config/global-config.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
@@ -51,7 +51,7 @@ export class ChatThreadComponent extends LitElement {
     this.handleInput = this.handleInput.bind(this);
   }
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     if (this.actionCompontents) {
       for (const component of this.actionCompontents) {
@@ -91,10 +91,10 @@ export class ChatThreadComponent extends LitElement {
     }, 500);
   }
 
-  handleInput(input: string) {
+  handleInput(event: CustomEvent<InputValue>) {
     const followUpClickEvent = new CustomEvent('on-input', {
       detail: {
-        value: input,
+        value: event.detail.value,
       },
       bubbles: true,
       composed: true,
@@ -127,21 +127,12 @@ export class ChatThreadComponent extends LitElement {
   }
 
   renderTextEntry(textEntry: ChatMessageText) {
-    const entries = [html`<p class="chat__txt--entry">${unsafeHTML(textEntry.value)}</p>`];
+    const entries = [html`<div class="chat__txt--entry">${unsafeHTML(marked.parse(textEntry.value))}</div>`];
 
-    // render steps
-    if (textEntry.followingSteps && textEntry.followingSteps.length > 0) {
-      entries.push(html`
-        <ol class="items__list steps">
-          ${textEntry.followingSteps.map(
-            (followingStep) => html` <li class="items__listItem--step">${unsafeHTML(followingStep)}</li> `,
-          )}
-        </ol>
-      `);
-    }
     if (this.isProcessingResponse) {
       this.debounceScrollIntoView();
     }
+
     return html`<div class="chat_txt--entry-container">${entries}</div>`;
   }
 

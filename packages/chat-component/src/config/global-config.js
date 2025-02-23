@@ -70,7 +70,6 @@ const chatHttpOptions = {
   // API URL for development purposes
   url: 'http://localhost:3000',
   method: 'POST',
-  stream: true,
 };
 
 const MAX_CHAT_HISTORY = 5;

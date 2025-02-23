@@ -2,12 +2,7 @@ import { type SearchClient } from '@azure/search-documents';
 import { type OpenAiService } from '../../plugins/openai.js';
 import { messagesToString } from '../message.js';
 import { MessageBuilder } from '../message-builder.js';
-import {
-  type ApproachResponse,
-  type ApproachContext,
-  type AskApproach,
-  type ApproachResponseChunk,
-} from './approach.js';
+import { type ApproachResponse, type ApproachContext, type AskApproach } from './approach.js';
 import { ApproachBase } from './approach-base.js';
 
 const SYSTEM_CHAT_TEMPLATE = `You are an intelligent assistant helping Consto Real Estate company customers with support questions regarding terms of service, privacy policy, and questions about support requests.
@@ -87,10 +82,5 @@ export class AskRetrieveThenRead extends ApproachBase implements AskApproach {
       ],
       object: 'chat.completion',
     };
-  }
-
-  // eslint-disable-next-line require-yield
-  async *runWithStreaming(_query: string, _context?: ApproachContext): AsyncGenerator<ApproachResponseChunk, void> {
-    throw new Error('Streaming not supported for this approach.');
   }
 }

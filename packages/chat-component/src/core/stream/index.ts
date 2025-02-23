@@ -20,10 +20,3 @@ export async function* readStream<T>(reader: any): AsyncGenerator<T, void> {
     });
   }
 }
-
-// Stop stream
-export function cancelStream<T>(stream: ReadableStream<T> | null): void {
-  if (stream) {
-    stream.cancel();
-  }
-}

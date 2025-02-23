@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './Chat.module.css';
 import { RetrievalMode, apiBaseUrl, type RequestOverrides } from '../../api/index.js';
 import { SettingsButton } from '../../components/SettingsButton/index.js';
@@ -16,12 +16,8 @@ const Chat = () => {
   const [retrieveCount, setRetrieveCount] = useState<number>(3);
   const [retrievalMode, setRetrievalMode] = useState<RetrievalMode>(RetrievalMode.Hybrid);
   const [useSemanticRanker, setUseSemanticRanker] = useState<boolean>(true);
-  const [useStream, setUseStream] = useState<boolean>(true);
   const [useSemanticCaptions, setUseSemanticCaptions] = useState<boolean>(false);
   const [excludeCategory, setExcludeCategory] = useState<string>('');
-  const [useSuggestFollowupQuestions, setUseSuggestFollowupQuestions] = useState<boolean>(true);
-
-  const chatMessageStreamEnd = useRef<HTMLDivElement | null>(null);
 
   const [isLoading] = useState<boolean>(false);
 
@@ -57,23 +53,12 @@ const Chat = () => {
     setUseSemanticCaptions(!!checked);
   };
 
-  const onUseStreamChange = (_event?: React.FormEvent<HTMLElement | HTMLInputElement>, checked?: boolean) => {
-    setUseStream(!!checked);
-  };
-
   const onExcludeCategoryChanged = (_event?: React.FormEvent, newValue?: string) => {
     setExcludeCategory(newValue || '');
   };
 
   const onEnableBrandingChange = (_event?: React.FormEvent<HTMLElement | HTMLInputElement>, checked?: boolean) => {
     setEnableBranding(!!checked);
-  };
-
-  const onUseSuggestFollowupQuestionsChange = (
-    _event?: React.FormEvent<HTMLElement | HTMLInputElement>,
-    checked?: boolean,
-  ) => {
-    setUseSuggestFollowupQuestions(!!checked);
   };
 
   const [isDarkTheme, setIsDarkTheme] = useState(() => {
@@ -163,8 +148,6 @@ const Chat = () => {
     // Store isDarkTheme in local storage whenever it changes
     localStorage.setItem('ms-azoaicc:isDarkTheme', JSON.stringify(isDarkTheme));
 
-    // Scroll into view when isLoading changes
-    chatMessageStreamEnd.current?.scrollIntoView({ behavior: 'smooth' });
     // Toggle 'dark' class on the shell app body element based on the isDarkTheme prop and isConfigPanelOpen
     document.body.classList.toggle('dark', isDarkTheme);
     document.documentElement.dataset.theme = isDarkTheme ? 'dark' : '';
@@ -185,7 +168,6 @@ const Chat = () => {
     prompt_template: promptTemplate,
     prompt_template_prefix: '',
     prompt_template_suffix: '',
-    suggest_followup_questions: useSuggestFollowupQuestions,
   };
 
   return (
@@ -200,7 +182,6 @@ const Chat = () => {
             data-input-position="sticky"
             data-interaction-model="chat"
             data-api-url={apiBaseUrl}
-            data-use-stream={useStream}
             data-approach="rrr"
             data-overrides={JSON.stringify(overrides)}
             data-custom-styles={JSON.stringify(customStyles)}
@@ -267,14 +248,6 @@ const Chat = () => {
             disabled={!useSemanticRanker}
           />
         </TooltipHost>
-        <TooltipHost calloutProps={toolTipTextCalloutProps} content={toolTipText.suggestFollowupQuestions}>
-          <Checkbox
-            className={styles.chatSettingsSeparator}
-            checked={useSuggestFollowupQuestions}
-            label="Suggest follow-up questions"
-            onChange={onUseSuggestFollowupQuestionsChange}
-          />
-        </TooltipHost>
         <TooltipHost calloutProps={toolTipTextCalloutProps} content={toolTipText.retrievalMode}>
           <Dropdown
             className={styles.chatSettingsSeparator}
@@ -296,14 +269,6 @@ const Chat = () => {
             ]}
             required
             onChange={onRetrievalModeChange}
-          />
-        </TooltipHost>
-        <TooltipHost calloutProps={toolTipTextCalloutProps} content={toolTipText.streamChat}>
-          <Checkbox
-            className={styles.chatSettingsSeparator}
-            checked={useStream}
-            label="Stream chat completion responses"
-            onChange={onUseStreamChange}
           />
         </TooltipHost>
         <div>

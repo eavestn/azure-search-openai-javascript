@@ -20,7 +20,6 @@ export const chatRequestSchema = {
         additionalProperties: false,
       },
     },
-    stream: { type: 'boolean' },
     context: {
       type: 'object',
       properties: {

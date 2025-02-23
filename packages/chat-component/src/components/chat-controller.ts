@@ -1,7 +1,6 @@
 import { type ReactiveController, type ReactiveControllerHost } from 'lit';
 import { getAPIResponse } from '../core/http/index.js';
-import { parseStreamedMessages } from '../core/parser/index.js';
-import { type ChatResponseError, getTimestamp, processText } from '../utils/index.js';
+import { type ChatResponseError, getTimestamp } from '../utils/index.js';
 import { globalConfig } from '../config/global-config.js';
 
 export class ChatController implements ReactiveController {
@@ -76,71 +75,29 @@ export class ChatController implements ReactiveController {
     this.clear();
   }
 
-  async processResponse(response: string | BotResponse, isUserMessage: boolean = false, useStream: boolean = false) {
-    const citations: Citation[] = [];
-    const followingSteps: string[] = [];
-    const followupQuestions: string[] = [];
+  async processResponse(response: string | BotResponse, isUserMessage: boolean = false) {
     const timestamp = getTimestamp();
-    let thoughts: string | undefined;
-    let dataPoints: string[] | undefined;
 
-    const updateChatWithMessageOrChunk = async (message: string | BotResponse, chunked: boolean) => {
+    const updateChatWithMessage = async (message: string | BotResponse) => {
       this.processingMessage = {
         id: crypto.randomUUID(),
         text: [
           {
-            value: chunked ? '' : (message as string),
-            followingSteps,
+            value: message as string,
           },
         ],
-        followupQuestions,
-        citations: [...new Set(citations)],
         timestamp: timestamp,
         isUserMessage,
-        thoughts,
-        dataPoints,
       };
-
-      if (chunked && this.processingMessage) {
-        this.isProcessingResponse = true;
-        this._abortController = new AbortController();
-
-        await parseStreamedMessages({
-          chatEntry: this.processingMessage,
-          signal: this._abortController.signal,
-          apiResponseBody: (message as unknown as Response).body,
-          onChunkRead: (updated) => {
-            this.processingMessage = updated;
-          },
-          onCancel: () => {
-            this.clear();
-          },
-        });
-
-        // processing done.
-        this.clear();
-      }
     };
 
-    // Check if message is a bot message to process citations and follow-up questions
-
     if (isUserMessage || typeof response === 'string') {
-      await updateChatWithMessageOrChunk(response, false);
-    } else if (useStream) {
-      await updateChatWithMessageOrChunk(response, true);
+      await updateChatWithMessage(response);
     } else {
-      // non-streamed response
       const generatedResponse = (response as BotResponse).choices[0].message;
-      const processedText = processText(generatedResponse.content, [citations, followingSteps, followupQuestions]);
-      const messageToUpdate = processedText.replacedText;
-      // Push all lists coming from processText to the corresponding arrays
-      citations.push(...(processedText.arrays[0] as unknown as Citation[]));
-      followingSteps.push(...(processedText.arrays[1] as string[]));
-      followupQuestions.push(...(processedText.arrays[2] as string[]));
-      thoughts = generatedResponse.context?.thoughts ?? '';
-      dataPoints = generatedResponse.context?.data_points?.text ?? [];
+      const messageToUpdate = generatedResponse.content;
 
-      await updateChatWithMessageOrChunk(messageToUpdate, false);
+      await updateChatWithMessage(messageToUpdate);
     }
   }
 
@@ -151,27 +108,31 @@ export class ChatController implements ReactiveController {
       try {
         this.generatingAnswer = true;
 
-        // for chat messages, process user question as a chat entry
         if (requestOptions.type === 'chat') {
-          await this.processResponse(question, true, false);
+          await this.processResponse(question, true);
         }
 
         this.isAwaitingResponse = true;
         this.processingMessage = undefined;
 
         const response = (await getAPIResponse(requestOptions, httpOptions)) as BotResponse;
+
         this.isAwaitingResponse = false;
 
-        await this.processResponse(response, false, httpOptions.stream);
+        await this.processResponse(response, false);
       } catch (error_: any) {
         const error = error_ as ChatResponseError;
+
         const chatError = {
           message: error?.code === 400 ? globalConfig.INVALID_REQUEST_ERROR : globalConfig.API_ERROR_MESSAGE,
         };
 
+        console.error('Error in generating the answer:', error.message);
+        console.error(error);
+
         if (!this.processingMessage) {
           // add a empty message to the chat thread to display the error
-          await this.processResponse('', false, false);
+          await this.processResponse('', false);
         }
 
         if (this.processingMessage) {

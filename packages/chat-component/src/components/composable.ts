@@ -1,7 +1,7 @@
-import { html, type ReactiveControllerHost, type TemplateResult } from 'lit';
+import { html, type ReactiveController, type ReactiveControllerHost, type TemplateResult } from 'lit';
 import { injectable, Container } from 'inversify';
 import getDecorators from 'inversify-inject-decorators';
-import { type ChatContextController } from '../chat-context.js';
+import { type ChatContextController } from './chat-context.js';
 
 export const container = new Container();
 export const { lazyMultiInject } = getDecorators(container);

@@ -1,11 +1,6 @@
 import { type SearchClient } from '@azure/search-documents';
 import { type OpenAiService } from '../../plugins/openai.js';
-import {
-  type ChatApproach,
-  type ApproachResponse,
-  type ChatApproachContext,
-  type ApproachResponseChunk,
-} from './approach.js';
+import { type ChatApproach, type ApproachResponse, type ChatApproachContext } from './approach.js';
 import { ApproachBase } from './approach-base.js';
 import { type Message } from '../message.js';
 import { MessageBuilder } from '../message-builder.js';
@@ -68,49 +63,6 @@ export class ChatReadRetrieveRead extends ApproachBase implements ChatApproach {
       ],
       object: 'chat.completion',
     };
-  }
-
-  async *runWithStreaming(
-    messages: Message[],
-    context?: ChatApproachContext,
-  ): AsyncGenerator<ApproachResponseChunk, void> {
-    const input = messages[messages.length - 1].content;
-
-    const history = this.createChatHistoryWithNewInput(
-      QUERY_PROMPT_TEMPLATE,
-      this.chatGptModel,
-      messages,
-      input,
-      this.chatGptTokenLimit - input.length,
-    );
-
-    const openAiChat = await this.openai.getChat();
-
-    const chatCompletion = await openAiChat.completions.create({
-      model: this.chatGptModel,
-      messages: history,
-      temperature: Number(context?.temperature ?? 0.7),
-      max_tokens: 500,
-      n: 1,
-      stream: true,
-    });
-
-    for await (const chunk of chatCompletion) {
-      const responseChunk = {
-        choices: [
-          {
-            index: 0,
-            delta: {
-              content: chunk.choices[0]?.delta.content ?? '',
-              role: 'assistant' as const,
-            },
-            finish_reason: chunk.choices[0]?.finish_reason,
-          },
-        ],
-        object: 'chat.completion.chunk' as const,
-      };
-      yield responseChunk;
-    }
   }
 
   private createChatHistoryWithNewInput(

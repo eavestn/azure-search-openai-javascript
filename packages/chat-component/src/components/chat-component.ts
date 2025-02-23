@@ -67,9 +67,6 @@ export class ChatComponent extends LitElement {
   @property({ type: String, attribute: 'data-custom-branding', converter: (value) => value?.toLowerCase() === 'true' })
   isCustomBranding: boolean = globalConfig.IS_CUSTOM_BRANDING;
 
-  @property({ type: String, attribute: 'data-use-stream', converter: (value) => value?.toLowerCase() === 'true' })
-  useStream: boolean = chatHttpOptions.stream;
-
   @property({ type: String, attribute: 'data-approach' })
   approach = requestOptions.approach;
 
@@ -230,6 +227,9 @@ export class ChatComponent extends LitElement {
     event.preventDefault();
     this.collapseAside(event);
     const question = DOMPurify.sanitize(this.questionInput.value);
+
+    console.log('chat started');
+
     this.isChatStarted = true;
 
     await this.chatController.generateAnswer(
@@ -250,9 +250,10 @@ export class ChatComponent extends LitElement {
 
         // override if the user has provided different values
         url: this.apiUrl,
-        stream: this.useStream,
       },
     );
+
+    console.log('chat answered');
 
     if (this.interactionModel === 'chat') {
       this.saveChatThreads(this.chatThread);

@@ -46,10 +46,8 @@ export type ChatApproachContext = ApproachContext & {
 
 export interface ChatApproach {
   run(messages: Message[], context?: ChatApproachContext): Promise<ApproachResponse>;
-  runWithStreaming(messages: Message[], context?: ChatApproachContext): AsyncGenerator<ApproachResponseChunk, void>;
 }
 
 export interface AskApproach {
   run(query: string, context?: ApproachContext): Promise<ApproachResponse>;
-  runWithStreaming(query: string, context?: ApproachContext): AsyncGenerator<ApproachResponseChunk, void>;
 }

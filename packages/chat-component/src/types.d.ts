@@ -1,12 +1,10 @@
 declare interface ChatHttpOptions {
   method: string;
   url: string;
-  stream: boolean;
   signal: AbortSignal;
 }
 declare interface ChatMessageText {
   value: string;
-  followingSteps?: string[];
 }
 
 // We declare a simple interface for the chat messages
@@ -28,11 +26,6 @@ declare interface ChatThreadEntry {
 declare interface Citation {
   ref: number;
   text: string;
-}
-
-declare interface ProcessTextReturn {
-  replacedText: string;
-  arrays: Array<Array<string> | Array<Citation>>;
 }
 
 declare interface ChatRequestOptions {
