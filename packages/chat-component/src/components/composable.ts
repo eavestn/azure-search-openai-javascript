@@ -23,8 +23,8 @@ export interface ComposableReactiveController extends ReactiveController {
 
 @injectable()
 export abstract class ComposableReactiveControllerBase implements ComposableReactiveController {
-  protected host: ReactiveControllerHost;
-  protected context: ChatContextController;
+  protected host: ReactiveControllerHost | undefined;
+  protected context: ChatContextController | undefined;
 
   attach(host: ReactiveControllerHost, context: ChatContextController) {
     (this.host = host).addController(this);

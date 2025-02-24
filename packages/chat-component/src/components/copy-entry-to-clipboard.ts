@@ -21,7 +21,7 @@ export class CopyToClipboardActionController
 
   set isResponseCopied(value: boolean) {
     this._isResponseCopied = value;
-    this.host.requestUpdate();
+    this.host?.requestUpdate();
   }
 
   get isResponseCopied() {
