@@ -251,7 +251,7 @@ const Chat = () => {
         <TooltipHost calloutProps={toolTipTextCalloutProps} content={toolTipText.retrievalMode}>
           <Dropdown
             className={styles.chatSettingsSeparator}
-            label="Retrieval mode"
+            label="Retrieval mode poop"
             options={[
               {
                 key: 'hybrid',

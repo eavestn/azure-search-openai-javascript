@@ -20,10 +20,6 @@ const router = createHashRouter([
         element: <Chat />,
       },
       {
-        path: 'qa',
-        lazy: () => import('./pages/oneshot/OneShot.jsx'),
-      },
-      {
         path: '*',
         lazy: () => import('./pages/NoPage.jsx'),
       },

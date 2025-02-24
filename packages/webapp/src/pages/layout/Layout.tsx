@@ -1,4 +1,4 @@
-import { Outlet, NavLink, Link } from 'react-router-dom';
+import { Outlet, NavLink } from 'react-router-dom';
 
 import github from '../../assets/github.svg';
 
@@ -9,9 +9,6 @@ const Layout = () => {
     <div className={styles.layout}>
       <header className={styles.header}>
         <div className={styles.headerContainer}>
-          <Link to="/" className={styles.headerTitleContainer}>
-            <h3 className={styles.headerTitle}>GPT + Enterprise data | Sample</h3>
-          </Link>
           <nav>
             <ul className={styles.headerNavList}>
               <li>
@@ -20,14 +17,6 @@ const Layout = () => {
                   className={({ isActive }) => (isActive ? styles.headerNavPageLinkActive : styles.headerNavPageLink)}
                 >
                   Chat
-                </NavLink>
-              </li>
-              <li className={styles.headerNavLeftMargin}>
-                <NavLink
-                  to="/qa"
-                  className={({ isActive }) => (isActive ? styles.headerNavPageLinkActive : styles.headerNavPageLink)}
-                >
-                  Ask a question
                 </NavLink>
               </li>
               <li className={styles.headerNavLeftMargin}>
@@ -49,7 +38,6 @@ const Layout = () => {
               </li>
             </ul>
           </nav>
-          <h4 className={styles.headerRightText}>Azure OpenAI + AI Search</h4>
         </div>
       </header>
 

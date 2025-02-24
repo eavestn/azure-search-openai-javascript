@@ -1,13 +1,8 @@
 const globalConfig = {
   BOT_TYPING_EFFECT_INTERVAL: 50, // in ms
-
-  // Is default prompts enabled?
   IS_DEFAULT_PROMPTS_ENABLED: true,
-  // Default prompts to display in the chat
   DISPLAY_DEFAULT_PROMPTS_BUTTON: 'Not sure what to ask? Try our suggestions!',
-  // This are the chat bubbles that will be displayed in the chat
   CHAT_MESSAGES: [],
-  // This are the labels for the chat button and input
   CHAT_BUTTON_LABEL_TEXT: 'Ask Support',
   CHAT_CANCEL_BUTTON_LABEL_TEXT: 'Cancel Generation',
   CHAT_VOICE_BUTTON_LABEL_TEXT: 'Voice input',
@@ -26,18 +21,13 @@ const globalConfig = {
   HIDE_THOUGH_PROCESS_BUTTON_LABEL_TEXT: 'Hide thought process',
   LOADING_INDICATOR_TEXT: 'Please wait. We are searching and generating an answer...',
   LOADING_TEXT: 'Loading...',
-  // API ERROR HANDLING IN UI
   API_ERROR_MESSAGE: 'Sorry, we are having some problems. Please try again later.',
   INVALID_REQUEST_ERROR: 'Unable to generate answer for this query. Please modify your question and try again.',
-  // Config pertaining the response format
   THOUGHT_PROCESS_LABEL: 'Thought Process',
   SUPPORT_CONTEXT_LABEL: 'Support Context',
   CITATIONS_LABEL: 'Learn More:',
   CITATIONS_TAB_LABEL: 'Citations',
-  // Custom Branding
   IS_CUSTOM_BRANDING: true,
-  // Custom Branding details
-  // All these should come from persistence config
   BRANDING_URL: '#',
   BRANDING_LOGO_ALT: 'Brand Logo',
   BRANDING_HEADLINE: 'Welcome to the Support Assistant of our Brand',
@@ -48,9 +38,7 @@ const globalConfig = {
 };
 
 const teaserListTexts = {
-  TEASER_CTA_LABEL: 'Ask now',
   HEADING_CHAT: "Welcome, let's change your work.",
-  HEADING_ASK: 'Ask a question',
   DEFAULT_PROMPTS: [],
 };
 
