@@ -25,6 +25,6 @@ export default defineConfig({
     chunkSizeWarningLimit: 1024,
   },
   server: {
-    proxy: { '/ask': 'http://127.0.0.1:3000', '/chat': 'http://127.0.0.1:3000', '/content': 'http://127.0.0.1:3000' },
+    proxy: { '/chat': 'http://127.0.0.1:3000', '/content': 'http://127.0.0.1:3000' },
   },
 });

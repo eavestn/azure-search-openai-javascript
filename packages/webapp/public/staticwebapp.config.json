@@ -9,12 +9,12 @@
               "clientSecretSettingName": "AADB2C_PROVIDER_CLIENT_SECRET"
             },
             "openIdConnectConfiguration": {
-              "wellKnownOpenIdConfiguration": "https://gener8vauth.b2clogin.com/gener8vauth.onmicrosoft.com/B2C_1_GENER8V_AUTH_LOGIN/v2.0/.well-known/openid-configuration"
+              "wellKnownOpenIdConfiguration": "https://gener8vai.b2clogin.com/gener8vai.onmicrosoft.com/B2C_1_GENER8V_AUTH/v2.0/.well-known/openid-configuration"
             }
           },
           "login": {
-            "nameClaimType": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier",
-            "scopes": [],
+            "nameClaimType": "emails",
+            "scopes": ["openid"],
             "loginParameterNames": []
           }
         }

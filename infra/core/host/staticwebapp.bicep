@@ -4,8 +4,8 @@ param location string = resourceGroup().location
 param tags object = {}
 
 param sku object = {
-  name: 'Free'
-  tier: 'Free'
+  name: 'standard'
+  tier: 'standard'
 }
 
 resource web 'Microsoft.Web/staticSites@2022-03-01' = {
