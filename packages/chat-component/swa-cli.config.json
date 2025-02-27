@@ -2,7 +2,7 @@
   "$schema": "https://aka.ms/azure/static-web-apps-cli/schema",
   "configurations": {
     "frontend": {
-      "appLocation": "./src",
+      "appLocation": ".",
       "apiLocation": "",
       "outputLocation": "./dist",
       "apiLanguage": "node",

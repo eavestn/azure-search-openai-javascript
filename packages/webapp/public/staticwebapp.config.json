@@ -1,4 +1,10 @@
 {
+  "routes": [
+    {
+      "route": "/*",
+      "allowedRoles": ["authenticated"]
+    }
+  ],
   "auth": {
     "identityProviders": {
       "customOpenIdConnectProviders": {
@@ -9,16 +15,21 @@
               "clientSecretSettingName": "AADB2C_PROVIDER_CLIENT_SECRET"
             },
             "openIdConnectConfiguration": {
-              "wellKnownOpenIdConfiguration": "https://gener8vai.b2clogin.com/gener8vai.onmicrosoft.com/B2C_1_GENER8V_AUTH/v2.0/.well-known/openid-configuration"
+              "wellKnownOpenIdConfiguration": "https://gener8vai.b2clogin.com/gener8vai.onmicrosoft.com/B2C_1_GENER8V_SEARCH_AUTH/v2.0/.well-known/openid-configuration"
             }
           },
           "login": {
-            "nameClaimType": "emails",
-            "scopes": ["openid"],
+            "nameClaimType": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name",
+            "scopes": [],
             "loginParameterNames": []
           }
         }
       }
+    }
+  },
+  "responseOverrides": {
+    "401": {
+      "redirect": "/.auth/login/aadb2c"
     }
   }
 }
